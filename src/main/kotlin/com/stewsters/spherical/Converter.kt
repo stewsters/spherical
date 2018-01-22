@@ -1,22 +1,32 @@
 package com.stewsters.spherical
 
+import com.github.sarxos.webcam.Webcam
+import com.github.sarxos.webcam.WebcamPanel
+import com.github.sarxos.webcam.ds.v4l4j.V4l4jDriver
 import java.awt.image.BufferedImage
-import java.io.File
 import java.lang.Math.cos
 import java.lang.Math.sin
-import javax.imageio.ImageIO
+import javax.swing.JFrame
 
 data class Point(val x: Int, val y: Int)
 
 fun main(args: Array<String>) {
 
-    File("input").listFiles().filter { it.name.endsWith(".jpg") }.forEach {
-        ImageIO.write(
-                transform(ImageIO.read(it)),
-                "jpg",
-                File("output/${it.name.split(".")[0]}.jpg")
-        )
-    }
+    Webcam.setDriver(V4l4jDriver())
+    val frame = JFrame("demo")
+
+    frame.add(WebcamPanel(Webcam.getDefault()))
+    frame.pack()
+    frame.isVisible = true
+    frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+
+//    File("input").listFiles().filter { it.name.endsWith(".jpg") }.forEach {
+//        ImageIO.write(
+//                transform(ImageIO.read(it)),
+//                "jpg",
+//                File("output/${it.name.split(".")[0]}.jpg")
+//        )
+//    }
 
 }
 
