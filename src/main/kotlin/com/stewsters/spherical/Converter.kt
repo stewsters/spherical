@@ -10,7 +10,7 @@ data class Point(val x: Int, val y: Int)
 
 fun main(args: Array<String>) {
 
-    File("input").listFiles().filter { it.endsWith(".jpg") }.forEach {
+    File("input").listFiles().filter { it.name.endsWith(".jpg") }.forEach {
         ImageIO.write(
                 transform(ImageIO.read(it)),
                 "jpg",
