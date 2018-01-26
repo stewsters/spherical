@@ -1,32 +1,64 @@
 package com.stewsters.spherical
 
 import com.github.sarxos.webcam.Webcam
-import com.github.sarxos.webcam.WebcamPanel
 import com.github.sarxos.webcam.ds.v4l4j.V4l4jDriver
+import spark.kotlin.Http
+import spark.kotlin.ignite
 import java.awt.image.BufferedImage
 import java.lang.Math.cos
 import java.lang.Math.sin
-import javax.swing.JFrame
 
 data class Point(val x: Int, val y: Int)
+
+var center:Double = 0.0;
 
 fun main(args: Array<String>) {
 
     Webcam.setDriver(V4l4jDriver())
-    val frame = JFrame("demo")
 
-    frame.add(WebcamPanel(Webcam.getDefault()))
-    frame.pack()
-    frame.isVisible = true
-    frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+    val second = 1000000000
+    val webcam = Webcam.getDefault()
 
-//    File("input").listFiles().filter { it.name.endsWith(".jpg") }.forEach {
-//        ImageIO.write(
-//                transform(ImageIO.read(it)),
-//                "jpg",
-//                File("output/${it.name.split(".")[0]}.jpg")
-//        )
-//    }
+    if (!webcam.isOpen) {
+        webcam.open()
+    }
+
+
+    val http: Http = ignite()
+    http.port(5805)
+    http.get("/") {
+        center
+    }
+
+    var lastTimeNs = System.nanoTime()
+    var frames = 0;
+
+    while (true) {
+        val currentTime = System.nanoTime()
+        frames++;
+        if (currentTime - lastTimeNs >= second) {
+            println("fps " + frames)
+            frames = 0
+            lastTimeNs += second
+        }
+
+        if (webcam.isImageNew) {
+            val image = webcam.image
+
+            for (x in 0..image.width - 1) {
+                for (y in 0..image.height - 1) {
+                    val rgb = image.getRGB(x, y)
+
+                    val red = rgb shr 16 and 0xFF
+                    val green = rgb shr 8 and 0xFF
+                    val blue = rgb and 0xFF
+
+                    val yellow = Math.min(red,green) * (1-blue)
+                }
+            }
+
+        }
+    }
 
 }
 
