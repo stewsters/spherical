@@ -5,8 +5,6 @@ import com.github.sarxos.webcam.ds.v4l4j.V4l4jDriver
 import spark.kotlin.Http
 import spark.kotlin.ignite
 
-data class Point(val x: Int, val y: Int)
-
 var exists = false;
 var avgX: Double = 0.0;
 var avgY: Double = 0.0;
