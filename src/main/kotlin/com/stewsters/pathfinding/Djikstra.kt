@@ -1,6 +1,6 @@
 package com.stewsters.pathfinding
 
-fun findPath(field: Matrix2d<Boolean>, start: Vec2, end: Vec2): List<Vec2>? {
+fun findPath(field: Matrix2d<Double>, start: Vec2, end: Vec2): List<Vec2>? {
 
     val costs = Matrix2d<Double>(field.xSize, field.ySize, { x, y -> Double.MAX_VALUE })
     costs[start] = 0.0;
@@ -35,9 +35,9 @@ fun findPath(field: Matrix2d<Boolean>, start: Vec2, end: Vec2): List<Vec2>? {
         //  for each point, set the cost, and a pointer back if we set the cost
         neighbors
                 .filter { field.contains(it) } // make sure we are on the field
-                .filter { field[it] } // make sure we don't hit switches
+                .filter { field[it] < 100000 } // make sure we don't hit switches
                 .forEach {
-                    val nextCost = costs[cheapestNode] + 1 // TODO: use cost on grid
+                    val nextCost = costs[cheapestNode] + field[it]// TODO: use cost on grid
 
                     if (nextCost < costs[it]) {
                         costs[it] = nextCost

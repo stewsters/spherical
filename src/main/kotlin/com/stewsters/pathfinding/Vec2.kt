@@ -58,3 +58,7 @@ fun getManhattanDistance(x1: Int, y1: Int, x2: Int, y2: Int): Int = (Math.abs(x1
 fun getChebyshevDistance(pos1: Vec2, pos2: Vec2): Int = getChebyshevDistance(pos1.x, pos1.y, pos2.x, pos2.y)
 
 fun getChebyshevDistance(x1: Int, y1: Int, x2: Int, y2: Int): Int = Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2))
+
+
+fun getEuclideanDistance(pos1: Vec2, pos2: Vec2): Double = getEuclideanDistance(pos1.x.toDouble(), pos1.y.toDouble(), pos2.x.toDouble(), pos2.y.toDouble())
+fun getEuclideanDistance(x1: Double, y1: Double, x2: Double, y2: Double): Double = Math.sqrt(Math.pow(x1 - x2, 2.0) + Math.pow(y1 - y2, 2.0))
